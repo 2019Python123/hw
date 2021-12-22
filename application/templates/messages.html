@@ -1,0 +1,20 @@
+{#显示消息页面#}
+<div class="col-sm-12 " style="float: left">
+    {% for user in users %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><img src="{{ user.img_data }}" alt="" width="60px" height="60px">   {{ user.name }}    <span style="color: red">发送过来一条消息</span>
+                    {% if messages[loop.index0].is_read %}<label style="margin-left: 50%" class="label label-success">已读</label>{% else %}
+                        <label id="msg_{{ messages[loop.index0].id }}" onclick="readed({{ messages[loop.index0].id }})" style="margin-left: 50%"  class="btn btn-danger label label-danger">未读</label>{% endif %}
+                    <label id="del_msg_{{ messages[loop.index0].id }}" onclick="del_msg({{ messages[loop.index0].id }} )" style="margin-left: 5%" class="btn btn-danger label label-danger" >删除消息</label>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {{ messages[loop.index0].body|striptags|truncate }}
+            </div>
+            <div class="panel-footer">
+                 <span style="color: #00a8c6">时间:</span>{{ messages[loop.index0].timestmp }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

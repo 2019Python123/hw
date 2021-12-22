@@ -1,0 +1,120 @@
+{#页栏#}
+{% macro show_pagination(pagination, endpoint) %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {# 上一页 #}
+            <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                <a href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{% else %}#{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            {# 中间页码 #}
+            {% for p in pagination.iter_pages() %}
+                {% if p %}
+                    <li {% if pagination.page == p %}class="active"{% endif %}><a href="{{ url_for(endpoint, page=p, **kwargs) }}">{{ p }}</a></li>
+                {% else %}
+                    <li><a href="#">&hellip;</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {# 下一页 #}
+            <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                <a href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{% else %}#{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endmacro %}
+
+
+{% macro ajax_show_pagination(pagination) %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {# 上一页 #}
+            <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                <a onclick="page(this)" data-  ="{% if pagination.has_prev %}{{ pagination.prev_num }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            {# 中间页码 #}
+            {% for p in pagination.iter_pages() %}
+                {% if p %}
+                    <li {% if pagination.page == p %}class="active"{% endif %}><a onclick="page(this)" data-page="{{ p }}">{{ p }}</a></li>
+                {% else %}
+                    <li><a href="#">&hellip;</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {# 下一页 #}
+            <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                <a  onclick="page(this)" data-page="{% if pagination.has_next %}{{ pagination.next_num }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endmacro %}
+
+
+{% macro species_show_pagination(pagination, endpoint,name) %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {# 上一页 #}
+            <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                <a href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num,name=name, **kwargs) }}{% else %}#{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            {# 中间页码 #}
+            {% for p in pagination.iter_pages() %}
+                {% if p %}
+                    <li {% if pagination.page == p %}class="active"{% endif %}><a href="{{ url_for(endpoint, page=p,name=name, **kwargs) }}">{{ p }}</a></li>
+                {% else %}
+                    <li><a href="#">&hellip;</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {# 下一页 #}
+            <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                <a href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num,name=name, **kwargs) }}{% else %}#{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endmacro %}
+
+
+
+{% macro works_show_pagination(pagination, endpoint,name) %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {# 上一页 #}
+            <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                <a href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num,name=name, **kwargs) }}{% else %}#{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            {# 中间页码 #}
+            {% for p in pagination.iter_pages() %}
+                {% if p %}
+                    <li {% if pagination.page == p %}class="active"{% endif %}><a href="{{ url_for(endpoint, page=p,name=name, **kwargs) }}">{{ p }}</a></li>
+                {% else %}
+                    <li><a href="#">&hellip;</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {# 下一页 #}
+            <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                <a href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num,name=name, **kwargs) }}{% else %}#{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endmacro %}

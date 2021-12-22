@@ -1,0 +1,22 @@
+.main{
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    width: 800px;
+    height: 500px;
+    line-height: 2;
+    margin: auto;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .3);
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
+    overflow: hidden;
+}
+main::before{
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    filter: blur(20px);
+    z-index: -1;
+    margin: -30px;
+}

@@ -1,0 +1,31 @@
+{#评论模态框#}
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">回复{{ post.author_name }}</h4>
+            </div>
+            <div class="modal-body " style="height: 200px">
+                <div class="form-horizontal col-sm-3 main"
+                     style="width:450px;position: relative;top: -3%;left: 10%;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    <div class="form-group" style="padding-top: 10px">
+                        <label for="comment_content" class="control-label col-sm-3">
+                            <span class="glyphicon glyphicon-send" style="font-size:20px;color: rgb(28, 211, 50);"></span> 评论
+                        </label>
+                        <div class="col-sm-9">
+                            <textarea type="text" id="comment_content" placeholder="评论 ">
+                            </textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="concel_comment()">返回</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="send_comments()">发表</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static',filename="/img/favicon.ico") }}" type="image/x-icon">
+    {% block scripts %}
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script crossorigin="anonymous"
+                integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+                src="https://lib.baomitu.com/socket.io/4.0.1/socket.io.js"></script>
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+        {#        <script src="{{ url_for('static',filename="js/vue.js") }}"></script>#}
+        {#        <script src="{{ url_for('static',filename="js/index.js") }}"></script>#}
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="{{ url_for('static',filename='js/app.js') }}"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#collapseFour').collapse({
+                    toggle: true
+                })
+            });
+            $(function () {
+                $('#collapseTwo').collapse('show')
+            });
+            $(function () {
+                $('#collapseThree').collapse('show')
+            });
+            $(function () {
+                $('#collapseOne').collapse('show')
+            });
+        </script>
+
+    {% endblock %}
+    {% block styles %}
+        <style type="text/css">
+            body {
+            {#0 / cover fixed#} background-image: url("{{ url_for('static',filename="img/index.jpg") }}");
+            }
+        </style>
+        {#        <link href="{{ url_for('static',filename="css/index.css") }}">#}
+        <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ url_for('static',filename='/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/app.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='editor/css/editormd.css') }}"/>
+
+    {% endblock %}
+</head>
+<body>
+{% include "email_modal.html" %}
+{% include "password.html" %}
+{% block nav %}
+    <nav class="navbar navbar-inverse col-sm-12 " role="navigation" style="background-color: #222c37">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand"><img src="{{ url_for('static',filename='img/champion.jpeg') }}" width="25px"
+                                             height="25px"></a>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}"> CAS软件组</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-hand-right"
+                                                         style="color: rgb(1, 226, 255);"></span> 介绍</a></li>
+                    <li><a href="{{ url_for("blog.show_posts",page=1) }}"><span class="glyphicon glyphicon-home"
+                                                                                style="color: rgb(28, 140, 255);"> 首页</span>
+                    </a></li>
+                    <li><a href="{{ url_for('blog.show_works',page=1) }}"><span class="glyphicon glyphicon-list-alt"
+                                                                                style="color: rgb(0, 226, 0);">  任务区</span>
+                    </a></li>
+                    <li><a href="{{ url_for('blog.show_species_posts',page=1,name='java') }}"><img
+                            src="{{ url_for('static',filename="img/java.jpeg") }}" alt="" width="20px"
+                            height="20px"> Java</a></li>
+                    <li><a href="{{ url_for('blog.show_species_posts',page=1,name='python') }}"><img
+                            src="{{ url_for('static',filename="img/Python.jpeg") }}" alt="" width="20px"
+                            height="20px"> Python</a></li>
+                    <li><a href="{{ url_for('blog.show_species_posts',page=1,name='c++|c') }}"><img
+                            src="{{ url_for('static',filename="img/c++.webp") }}" alt="" width="20px"
+                            height="20px"> C++/C</a></li>
+                    <li><a href="{{ url_for('blog.show_species_posts',page=1,name='c#') }}"><img
+                            src="{{ url_for('static',filename="img/csharp.jpeg") }}" alt="" width="20px"
+                            height="20px"> C#</a></li>
+                    <li><a href="{{ url_for('blog.show_species_posts',page=1,name='安卓') }}"><img
+                            src="{{ url_for('static',filename="img/android.jpeg") }}" alt="" width="20px"
+                            height="20px"> 安卓</a></li>
+                    <li><a href="{{ url_for('blog.show_species_posts',page=1,name='前端') }}"><img
+                            src="{{ url_for('static',filename="img/web.jpeg") }}" alt="" width="20px"
+                            height="20px"> 前端</a></li>
+                    <li><a href="{{ url_for("blog.new_post") }}"><span class="glyphicon glyphicon-pencil"
+                                                                       style="color: rgb(255, 140, 60);"> </span>
+                        创作</a></li>
+                    <li style="margin-top: 10px">
+                        <div class="form-group">
+                            <input id="search_content" type="text" class="form-control" placeholder="Search">
+                        </div>
+                    </li>
+                    <li style="margin-top: 20px">
+                        <select name="choose_p_w" id="p_w">
+                            <option value="post">博客</option>
+                            <option value="work">任务</option>
+                        </select>
+                    </li>
+                    <li style="margin-top: 10px">
+                        <button type="submit" class="btn btn-primary" onclick="search()">搜索</button>
+                    </li>
+                    {% if current_user.role_id == 6 %}
+                        <li><a href="{{ url_for('admin.index') }}"><span class="glyphicon glyphicon-globe"
+                                                                         style="color: rgb(0, 0, 255);"> 后台管理</span></a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {#                                <span class="glyphicon glyphicon-user" style="color: rgb(0, 214, 0);"> </span> #}
+                                <img src="{{ current_user.img_data }}" alt="" width="30px"
+                                     height="30px"> {{ current_user.name }}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="main"><a href="{{ url_for('main.self_center') }}"><span
+                                        class="glyphicon glyphicon-flash" style="color: rgb(0, 226, 0);"> </span>
+                                    个人中心</a></li>
+                                <li class="main"><a href="#" onclick="password_modal()"><span
+                                        class="glyphicon glyphicon-repeat" style="color: rgb(0, 226, 0);"> </span> 修改密码</a>
+                                </li>
+                                <li class="main"><a onclick="email_modal()"><span class="glyphicon glyphicon-envelope"
+                                                                                  style="color: rgb(0, 226, 0);"></span>
+                                    修改邮箱</a></li>
+                                <li class="divider"></li>
+                                <li class="main"><a href="#"><span class="glyphicon glyphicon-exclamation-sign"
+                                                                   style="color: rgb(0, 226, 0);"></span> 帮助中心</a></li>
+                                <li class="divider"></li>
+                                <li class="main"><a href="{{ url_for('auth.logout') }}"><span
+                                        class="glyphicon glyphicon-log-out" style="color: rgb(0, 226, 0);"></span> 退出登录</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ url_for('auth.login') }}" class="btn"><span class="glyphicon glyphicon-log-in"
+                                                                                    style="color: rgb(0, 214, 0);"></span>
+                                登录</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.logon') }}" class="btn"><span class="glyphicon glyphicon-saved"
+                                                                                    style="color: rgb(0, 214, 0);"></span>注册</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="panel-group col-sm-2 blue" id="accordion"
+         style="position: absolute;top:10%;border-radius: 5px">
+        <div style="font-size: 25px;padding-bottom: 5px;position: relative;left: 60px">
+            <span class="label label-danger">我们约法四章</span>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseOne">
+                        思想上
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in blue">
+                <div class="panel-body">
+                    拥护党的领导，维护党的方针、政策、路线，不参与不正确的组织，坚持“四个自信”，将所学知识融入祖国建设。
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseTwo">
+                        个人上
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse blue">
+                <div class="panel-body">
+                    坚持自己的学习路线，严格自律，保持学习的良好状态，不松懈、不放弃。
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseThree">
+                        与同学关系上
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse blue">
+                <div class="panel-body">
+                    友好相处，不搞小团体，不得排斥其他组员，尊重其他组员的学习方向，关爱身边组员，齐心协力打造良好的软件组氛围。
+
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseFour">
+                        学习方向上
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse blue">
+                <div class="panel-body">
+                    保持对所学方向的热爱，勇于提问，对于学弟要支持、要教导，要热爱软件组和软件组的成员。
+                </div>
+            </div>
+        </div>
+        <div style="font-size: 25px;padding-bottom: 5px;position: relative;left: 60px">
+            <span class="label label-danger">巴拉巴拉</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+{% block end %}
+{% endblock %}
+
+</body>
+</html>

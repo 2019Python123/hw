@@ -1,0 +1,92 @@
+{#个人中心页面#}
+{% extends "base.html" %}
+{% include "email_modal.html" %}
+{% include "password.html" %}
+{% include "submit.html" %}
+{% block title %}
+    {{ current_user.name }}的个人中心
+{% endblock %}
+{% block body %}
+    <div class="self">
+        {% include "self_nav.html" %}
+
+    </div>
+    <div id="myTabContent" class="tab-content"
+         style="position: absolute;top: 20%;left: 20%;background-color: #c0c0c0;color: #222226;text-align: left;">
+        <div class="tab-pane fade  " id="formation">
+            {% include "self_card.html" %}
+            <div class="card  col-sm-offset-8"
+                 style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position:absolute;left: 40%;width: 800px ;background-color: #fafafa;text-indent:50px;word-spacing:10px;">
+                <div class="card-body">
+                    <h4 class="card-title formation_mar"><span class="fa fa-drivers-license"
+                                                               style="font-size:20px;color:rgb(28, 211, 50)"></span>
+                        昵称: {{ current_user.name }}</h4>
+                    <h4 class="card-title formation_mar"><span class="fa fa-smile-o"
+                                                               style="font-size:20px;color:rgb(28, 211, 50)"></span>
+                        用户角色: <span
+                                class="label label-info">{{ current_user.role.role_name }}</span></h4>
+                    <h4 class="card-title formation_mar"><span class="fa fa-venus-mars"
+                                                               style="font-size:20px;color: rgb(28, 211, 50);"></span>
+                        性别: <span
+                                class="label {% if current_user.sex == '男' %} label-primary {% else %} label-danger {% endif %}">{{ current_user.sex }}</span>
+                    </h4>
+                    <h4 class="card-title formation_mar"><span class="fa fa-graduation-cap"
+                                                               style="font-size:20px;color: rgb(28, 211, 50);"></span>
+                        专业: {{ current_user.zhuanye }}</h4>
+                    <h4 class="card-title formation_mar"><span class="fa fa-envelope"
+                                                               style="font-size:20px;color: rgb(28, 211, 50);"></span>
+                        邮箱:
+                        {% if current_user.email %}{{ current_user.email }} {% else %} 暂未绑定 {% endif %}</h4>
+                    <button onclick="formation_up()"
+                            style="position:relative;left: 45%;text-align: center;margin-bottom: 20px" href="#"
+                            class="btn btn-danger"><span class="fa fa-keyboard-o"
+                                                         style="font-size:20px;color: rgb(28, 211, 50);"></span> 修改信息
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="blog"
+             style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position:absolute;left: 40%;width: 1080px ;text-indent:50px;word-spacing:10px;">
+            <div id="show_posts"></div>
+        </div>
+        <div class="tab-pane fade" id="test"
+             style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position:absolute;left: 40%;width: 1080px ;text-indent:50px;word-spacing:10px;">
+            <div id="show_works"></div>
+        </div>
+        <div class="tab-pane fade" id="collect" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position:absolute;left: 40%;width: 1080px ;text-indent:50px;word-spacing:10px;">
+            <div id="show_collect_posts"></div>
+        </div>
+        <div class="tab-pane fade" id="message" style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);position:absolute;left: 40%;width: 1080px ;text-indent:50px;word-spacing:10px;">
+            <div id="show_message"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <link href="{{ url_for('static',filename='css/app.css') }}" rel="stylesheet">
+
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(document).ready(function () {
+            var so = io.connect();
+            so.on('accept_message', function (result) {
+                 $("#show_message").append(result['html'])
+                alert(result['msg']);
+            })
+            so.on('connect',function () {
+                so.emit('join')
+            })
+            so.on('disconnect',function () {
+                so.emit('leave')
+            })
+            so.emit('query_msg',{'msg':'查询'})
+            so.on('get_query_msg',function (result) {
+                $("span.badge").text(result['count'])
+
+            })
+        })
+    </script>
+
+{% endblock %}

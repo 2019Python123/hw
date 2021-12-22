@@ -1,0 +1,20 @@
+{#管理员界面预览文件页面#}
+{% extends "base.html" %}
+{% block title %}
+    文件预览
+{% endblock %}
+{% block body %}
+    <div class="col-lg-8 col-sm-offset-2 post-text"
+         style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+        <form action="{{ url_for('main.down_file',filename=path) }}" method="get">
+            <input type="text" value="{{ path }}" disabled>
+            <input value="下载" type="submit" class="btn btn-primary" />
+        </form>
+        {% if type == 'img' or type == 'captcha' %}
+            <img src="{{ content }}" alt="">
+        {% else %}
+            {{ content|md|safe }}
+        {% endif %}
+
+    </div>
+{% endblock %}

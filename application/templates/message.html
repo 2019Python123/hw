@@ -1,0 +1,21 @@
+{#js添加新消息的页面#}
+<div class="col-sm-12 ">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"><img src="{{ user.img_data }}" alt="" width="60px" height="60px"> {{ user.name }}
+                <span style="color: red">发送过来一条消息</span>
+                {% if message.is_read %}<label style="margin-left: 50%" class="label label-success">已读</label>{% else %}
+                    <label id="msg_{{ message.id }}" onclick="readed({{ message.id }})" style="margin-left: 40%"
+                           class="btn btn-danger label label-danger">未读</label>{% endif %}
+                <label id="del_msg_{{ message.id }}" onclick="del_msg({{ message.id }} )"
+                       style="margin-left: 5%" class="btn btn-danger label label-danger">删除消息</label>
+            </h3>
+        </div>
+        <div class="panel-body">
+            {{ message.body|striptags|truncate }}
+        </div>
+        <div class="panel-footer">
+            <span style="color: #00a8c6">时间:</span>{{ message.timestmp }}
+        </div>
+    </div>
+</div>

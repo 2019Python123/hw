@@ -1,0 +1,114 @@
+{#信息显示页面#}
+<div class="card col-sm-6"
+     style="padding-top: 10px;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+    <div>
+        <img class="card-img-top" src="{{ current_user.img_data }}" alt="Card image" width="200px"
+             height="200px">
+    </div>
+    <div class="card-body" style="width: 200px">
+        <h4 class="card-title">{{ current_user.name }}</h4>
+        <p class="card-text" style="color:#ff4d51 ">
+            {% if current_user.about_me %}{{ current_user.about_me }}{% else %}暂未有签名{% endif %}</p>
+        <a href="#" class="btn btn-success" onclick="upload_img_modal()"> <span class="fa fa-desktop"></span> 更换头像</a>
+    </div>
+</div>
+
+
+{#上传头像，更新个人信息的模态框#}
+<div class="modal fade" id="upModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">更换头像</h4>
+            </div>
+            <div class="modal-body col-sm-offset-5" style="height: 350px">
+                <div style="position:relative;left: -80%;float: left"><img src="{{ current_user.img_data }}" alt="头像"
+                                                                           width="200px" height="200px"></div>
+                <div id="uploaded" style="float: left;position:relative;top: -60%"><img src="" alt="头像" width="200px"
+                                                                                        height="200px"></div>
+                <div style="position:relative;top: -40%">
+                    <input onchange="upload_img(this)" name="img_file" value="请上传照片" type="file"
+                           enctype='multipart/form-data' accept="image/png,image/jpeg">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="concel()">关闭</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="ok(this)">上传</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="formationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">信息更新</h4>
+            </div>
+            <div class="modal-body " style="height: 380px">
+                <div class="form-horizontal col-sm-3 main"
+                     style="width:450px;position: relative;top: -3%;left: 10%;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    <div class="form-group" style="padding-top: 10px">
+                        <label for="nichen" class="col-sm-3 control-label">
+                            <span class="fa fa-drivers-license" style="font-size:20px;color:rgb(28, 211, 50)"></span> 昵称
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="name" name="name" placeholder="{{ current_user.name }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sex" class="col-sm-3 control-label"><span
+                                class="fa fa-venus-mars"
+                                style="font-size:20px;color: rgb(28, 211, 50);"></span> 性别</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="sex" name="sex" class="form-control"
+                                   placeholder="{{ current_user.sex }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            <span
+                                    class="fa fa-graduation-cap" style="font-size:20px;color: rgb(28, 211, 50);"></span>
+                            专业</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="zy" name="zym" class="form-control"
+                                   placeholder="专业({{ current_user.zhuanye }})">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-3 control-label"><span class="fa fa-flag"
+                                                                    style="font-size:20px;color: rgb(28, 211, 50);"></span>
+                            座右铭</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="zym" name="remember" class="form-control"
+                                   placeholder="{{ current_user.about_me }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="yzm_formation" class="col-sm-3 control-label"><span
+                                class="fa fa-shield"
+                                style="font-size:20px;color: rgb(28, 211, 50);"></span> 验证码</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="yzm" class="form-control" id="yzm_formation"
+                                   placeholder="验证码">
+                        </div>
+                        <div class="col-sm-5" id="captcha" onclick="get_captcha()">
+                            <img src="{{ url_for('static',filename=img_src) }}" alt="验证码">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="down_formation()">关闭</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="modify_formation()">更改</button>
+        </div>
+    </div>
+</div>
+
+

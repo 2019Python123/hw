@@ -1,0 +1,60 @@
+{#提交作业模态框#}
+<div class="modal fade" id="submitModal_by_blog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提交作业</h4>
+            </div>
+            <div class="modal-body " style="height: 200px">
+                <div class="form-horizontal col-sm-3 main"
+                     style="width:450px;position: relative;top: -3%;left: 10%;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    <div class="form-group" style="padding-top: 10px">
+                        <label for="comment_content" class="control-label col-sm-3">
+                            <span class="glyphicon glyphicon-send" style="font-size:20px;color: rgb(28, 211, 50);"></span> 博客链接
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="blog_url" placeholder="您的博客链接">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel_modal('blog_url')">返回</button>
+            <button type="button"  class="btn btn-success" data-dismiss="modal" onclick="submit_blog()">提交</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="submitModal_by_file" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提交作业</h4>
+            </div>
+            <div class="modal-body " style="height: 200px">
+                <div class="form-horizontal col-sm-3 main"
+                     style="width:450px;position: relative;top: -3%;left: 10%;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+                    <div class="form-group" style="padding-top: 10px">
+                        <label for="comment_content" class="control-label col-sm-3">
+                            <span class="glyphicon glyphicon-send" style="font-size:20px;color: rgb(28, 211, 50);"></span> 上传文件
+                        </label>
+                        <div class="col-sm-9">
+                            <input onchange="submit_file(this)" type="file" id="file_" placeholder="请上传文件" multiple >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">返回</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" id="submit_file">提交</button>
+        </div>
+    </div>
+</div>

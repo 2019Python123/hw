@@ -1,0 +1,21 @@
+{#首页#}
+{% extends "base.html" %}
+{% block title %}
+    欢迎来到cas软件组官方网站
+{% endblock %}
+{% include "email_modal.html" %}
+{% include "password.html" %}
+{% block body %}
+    <span class="col-lg-3 " style="position: absolute;top:30%;left:25%;color: #3a8ee6;font-size: 30px">快来cas软件组</span>
+    <div class="col-lg-3 col-lg-offset-5 " style="position: absolute;top: 25%">
+        <img src="{{ url_for('static',filename="img/dex.gif") }}">
+    </div>
+    <div class="col-lg-3 col-lg-offset-5" style="position:absolute;top: 60%">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">进来点这里哦</a>
+    </div>
+{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <link href="{{ url_for('static',filename='css/app.css') }}" rel="stylesheet">
+
+{% endblock %}

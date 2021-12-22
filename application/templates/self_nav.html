@@ -1,0 +1,25 @@
+{#个人中心导航栏#}
+<ul class="nav nav-pills" id="myTab" style="font-size: 15px">
+    <li class="active"><a href="#" style="color: rgb(28, 211, 50);"><span class="fa fa-users"
+                                                                          style="color:rgb(255, 140, 60);"></span> {{ current_user.name }}
+        的个人中心</a></li>
+    <li><a href="#formation" style="color: rgb(28, 211, 50);" data-toggle="tab"><span
+            class="glyphicon glyphicon-credit-card" style="color: rgb(255, 140, 60);"></span> 基本信息</a></li>
+    <li><a href="#blog" onclick="show_posts()" style="color: rgb(28, 211, 50);" data-toggle="tab"><span
+            class="glyphicon glyphicon-leaf" style="color: rgb(255, 140, 60);"></span> 博客</a></li>
+    <li><a href="#test" onclick="show_works()" style="color: rgb(28, 211, 50);" data-toggle="tab"><span
+            class="glyphicon glyphicon-list-alt" style="color: rgb(255, 140, 60);"></span> 任务</a></li>
+    <li><a href="#collect" onclick="show_collect_posts()" style="color: rgb(28, 211, 50);" data-toggle="tab"><span
+            class="glyphicon glyphicon-book" style="color: rgb(255, 140, 60);"></span> 收藏</a></li>
+    <li><a href="#message" style="color: rgb(28, 211, 50);" onclick="show_message()" data-toggle="tab"><span
+            class="glyphicon glyphicon-comment" style="color: rgb(255, 140, 60);"></span> 个人消息<span
+            class="badge"></span></a></li>
+    <li>
+        <div class="form-group">
+            <input id="search_content_self" type="text" class="form-control" placeholder="Search">
+        </div>
+    </li>
+    <li>
+        <button id="self_btn" data-type="" type="submit" class="btn btn-info" onclick="search_self()" >搜索</button>
+    </li>
+</ul>

@@ -1,0 +1,39 @@
+{#单个任务页面#}
+{% extends "base.html" %}
+{% include "submit.html" %}
+{% block body %}
+    <div class="col-lg-8 col-sm-offset-3 post-text"
+         style="box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
+        <div class="page-header">
+            <span style="font-size: 30px" id="get_h_id" data-hid="{{ post.id }}">{{ post.title }}</span>
+            <small style="margin-right: 70%"></small>
+
+            <span class="glyphicon glyphicon-send"
+                  style="cursor: pointer;color: rgb(255, 140, 60);"> 作者：{{ post.author_name }}</span>
+
+        </div>
+        <div class="panel-body">
+            {% if post.is_url %}<a href="{{ url_for('main.show',args='release_work\\'+post.body) }}">{{ post.body }}</a>{% else %}{{ post.body|md|safe }}{% endif %}
+        </div>
+        <div class="panel-body">
+            <span class="label label-info" style="margin-right: 10px">题目描述:</span> <span style="color: darkorange;font-size: 22px">{{ post.describe|striptags|truncate }}</span>
+        </div>
+        <div class="panel-body">
+            <span class="glyphicon glyphicon-time" style="color: rgb(255, 140, 60);"> 发表时间：{{ post.timestmp }}</span>
+            <span style="margin-right: 20%"></span>
+            <span class="glyphicon glyphicon-comment"
+                  style="color: rgb(255, 140, 60);">    评论：<i class="badge">0</i></span>
+            <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);cursor: pointer" id="collect"
+                  onclick="collect()"> 收藏：<i
+                    class="badge">0</i></span>
+            <span class="glyphicon glyphicon-heart-empty" style="color: rgb(255, 140, 60);cursor: pointer" id="dz"
+                  onclick="dz()"> 点赞：<i
+                    class="badge">0</i></span>
+            <button class="btn btn-info" onclick="comment_modal()">评论</button>
+            <span style="margin-right: 10%"></span>
+            <span class="label label-success">{{ post.species_name }}</span>
+            <span class="glyphicon glyphicon-exclamation-sign" style="color: rgb(255, 0, 42);margin-left: 10px">难度：<label
+                            class="label label-primary">{{ post.difficulty }}</label></span>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{#发布作业页面#}
+{% extends "admin/master.html" %}
+{% block title %}
+    发布作业
+{% endblock %}
+{% block body %}
+    <table class="table table-hover">
+        <caption>作业列表</caption>
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="checkbox" id="choose_all" onclick="choose_all()"></th>
+            <th>作业标题</th>
+            <th>作业描述</th>
+            <th>作业详情</th>
+            <th>作业标签</th>
+            <th>用户</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        {% for hw in homeworks %}
+            <thbody>
+                <tr>
+                    <td><input data-id="{{ loop.index }}" type="checkbox" class="checkbox" id="check_{{ loop.index }}">
+                    </td>
+
+
+                    <td>{{ hw.title }}</td>
+                    <td>{{ hw.describe }}</td>
+                    <td><a href="{{ url_for('blog.show_work',works_id=hw.id) }}"><label
+                            class="label label-info">查看详情</label></a></td>
+                    <td>{{ hw.species_name }}</td>
+                    <td>
+                        <select class="selectpicker" multiple data-live-search="true" data-live-search-placeholder="搜索"
+                                data-actions-box="true">
+                            <optgroup label="用户">
+                                {% for user in users %}
+                                    <option>{{ user.name }}
+                                        <label class="label label-danger">{{ user.main_ }}</label>
+                                        <label class="label label-info">{{ user.fuxiu_ }}</label>
+                                    </option>
+                                {% endfor %}
+
+                            </optgroup>
+                            　
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="submit(this)" class="btn btn-primary" data-hwid="{{ hw.id }}"
+                                data-id="{{ loop.index }}">发布
+                        </button>
+                    </td>
+                </tr>
+            </thbody>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block head_css %}
+    {{ super() }}
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            src="https://lib.baomitu.com/socket.io/4.0.1/socket.io.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/i18n/defaults-zh_CN.min.js"></script>
+    <script type="text/javascript">
+        function choose_all() {
+            let t = $("body > div.container > table > tbody > tr:nth-child(1) > td:nth-child(6) > div > button > span.filter-option.pull-left").text()
+            if ($("#choose_all:checked").val() === 'on') {
+                $("input[type=checkbox]").attr('checked', 'checked')
+            } else {
+                $("input[type=checkbox]").attr('checked', false)
+            }
+        }
+        let socketed = io.connect()
+        function submit(v) {
+            let string = $("body > div.container > table > tbody > tr:nth-child(" + v.dataset.id + ") > td:nth-child(6) > div > button > span.filter-option.pull-left").text()
+            let flag = $("#check_" + v.dataset.id + ":checked").val()
+            let data = {
+                'names': string,
+                'work_id': v.dataset.hwid
+            }
+            if (flag === 'on') {
+                $.post(
+                    '/admin/releasehomeworkview/release',
+                    JSON.stringify(data),
+                    function (result) {
+                        alert(result['msg'])
+                        if (parseInt(result['code']) === 200) {
+                            socketed.emit('msg',{'users':result['users'],'sender':result['sender_id']})
+                        }
+                    }
+                )
+            }else {
+                return false;
+            }
+        }
+    </script>
+{% endblock %}
