@@ -8,6 +8,10 @@ from . import blog
 @blog.route("/new_post",methods=['POST','GET'])
 @login_required
 def new_post():
+    """
+    发布博客
+    :return:
+    """
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data,
@@ -25,6 +29,11 @@ def new_post():
 @blog.route("/show_post/<int:page_id>",methods=['GET'])
 @login_required
 def show_post(page_id):
+    """
+    显示单个的博客内容
+    :param page_id:
+    :return:
+    """
     post = Post.query.filter_by(id=page_id).first()
     collect = Collect.query.filter_by(collect_user_id=current_user.id,collect_post_id=post.id).first()
     collected = False
@@ -36,6 +45,11 @@ def show_post(page_id):
 @blog.route("/show_posts/<int:page>",methods=['GET'])
 @login_required
 def show_posts(page):
+    """
+    显示所有文章
+    :param page:
+    :return:
+    """
     if not page:
         page = 1
     pagination = Post.query.filter_by().order_by(Post.timestmp.desc()).paginate(page=page,per_page=10)
@@ -47,6 +61,11 @@ def show_posts(page):
 @blog.route("/show_works/<int:page>",methods=['GET'])
 @login_required
 def show_works(page):
+    """
+    在首页显示所有作业
+    :param page:
+    :return:
+    """
     if not page:
         page = 1
     pagination = Homework.query.filter_by().order_by(Homework.timestmp.desc()).paginate(page=int(page),per_page=10)
@@ -58,6 +77,12 @@ def show_works(page):
 @blog.route("/show_posts/<int:page>/<string:name>",methods=['GET'])
 @login_required
 def show_species_posts(page,name):
+    """
+    实现点击标签超链接，显示不同标签的文章
+    :param page:
+    :param name:
+    :return:
+    """
     if not page:
         page = 1
     pagination = None
@@ -77,6 +102,12 @@ def show_species_posts(page,name):
 @blog.route("/show_works/<int:page>/<string:name>",methods=['GET'])
 @login_required
 def show_species_works(page,name):
+    """
+    实现点击标签超链接，显示不同标签的作业
+    :param page:
+    :param name:
+    :return:
+    """
     if not page:
         page = 1
     pagination = None
@@ -96,12 +127,22 @@ def show_species_works(page,name):
 @blog.route("/show/work/<int:works_id>")
 @login_required
 def show_work(works_id):
+    """
+    显示单个作业内容
+    :param works_id:
+    :return:
+    """
     homework = Homework.query.filter_by(id=works_id).first()
-    return render_template("blog/singal_work_index.html",post=homework)
+    return render_template("blog/singal_work.html",post=homework)
 
 
 @blog.route("/show/admin_work/<int:works_id>")
 @login_required
 def show_work_admin(works_id):
+    """
+    后台管理显示单个作业内容
+    :param works_id:
+    :return:
+    """
     homework = Homework.query.filter_by(id=works_id).first()
     return render_template("blog/singal_work_admin.html",post=homework)

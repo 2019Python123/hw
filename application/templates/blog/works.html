@@ -31,7 +31,7 @@
                                 class="badge">0</i></span>
                         <span style="margin-right: 20%"></span>
                         <span style="color: #00a8c6">时间:</span>{{ post.timestmp }}
-
+                        <span class="label {% if h_us[loop.index0].is_complete %}label-success{% else %}label-danger{% endif %}">{% if h_us[loop.index0].is_complete %}完成{% else %}未完成{% endif %}</span>
                     </div>
                 </div>
             {% endif %}

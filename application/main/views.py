@@ -20,6 +20,11 @@ def self_center():
 @main.route("/static/<string:args>")
 @login_required
 def show(args):
+    """
+    点击文件实现预览或者下载
+    :param args:
+    :return:
+    """
     file_data = args.split('\\')
     type_ = file_data[0]
     print(args)
@@ -53,8 +58,15 @@ def show(args):
 @main.route("/download_file/<string:filename>",methods=['GET'])
 @login_required
 def down_file(filename):
+    """
+    下载文件
+    :param filename:
+    :return:
+    """
     path = ''
+
     ds = session['system_file_path'].split('\\')
+    print(ds)
     for paths in range(len(ds)):
         if paths < len(ds)-1:
             path += ds[paths]+'\\'

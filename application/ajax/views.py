@@ -16,6 +16,10 @@ from sqlalchemy import or_,and_
 
 @ajax.route("/get_captcha",methods=['GET'])
 def get_captcha():
+    """
+    获取图形验证码
+    :return:
+    """
     content = {}
     img_src, yzm = get_file("application/static/captcha")
     print("ajax"+yzm)
@@ -27,8 +31,14 @@ def get_captcha():
 @ajax.route("/upload_img",methods=['POST'])
 @login_required
 def upload_mg():
+    """
+    上传用户头像
+    :return:
+    """
     if request.method == 'POST':
+        # 接受文件
         file = request.files['file']
+        # 获取base64编码数据
         data = img_to_base64(file.read(),file.name.split(".")[-1])
         current_user.img_data = data
         db.session.add(current_user)
@@ -39,6 +49,10 @@ def upload_mg():
 @ajax.route("/modify_formation",methods=['POST'])
 @login_required
 def modify_formation():
+    """
+    修改用户信息
+    :return:
+    """
     data = json.loads(request.get_data(as_text=True))
     print(data)
     if data['yzm'].lower() == session['yzm'].lower() :
@@ -56,6 +70,10 @@ def modify_formation():
 @ajax.route("/get_email_yzm",methods=['POST'])
 @login_required
 def get_yzm():
+    """
+    修改邮箱或者密码时需要邮箱验证
+    :return:
+    """
     recipe = request.get_data(as_text=True)
     recipe = json.loads(recipe)
     print(recipe)
@@ -63,11 +81,14 @@ def get_yzm():
     yzm = randint(1000, 9999)
     session['yzm'] = str(yzm)
     body = '您的验证码是: <h3>' + str(yzm) + '</h3>'
+    # 如果用户没有绑定邮箱
     if current_user.email is None:
+        # 则向用户输入的邮箱发送验证码
         msg = Message('绑定邮箱认证', sender=current_app.config['MAIL_USERNAME'], recipients=[recipe['email'], ])
         msg.body = body
         email.send(msg)
     else:
+        # 向用户绑定的邮箱发送验证码
         msg = Message('绑定邮箱认证', sender=current_app.config['MAIL_USERNAME'], recipients=[current_user.email, ])
         msg.body = body
         email.send(msg)
@@ -77,6 +98,10 @@ def get_yzm():
 @ajax.route("/modify_email",methods=['POST'])
 @login_required
 def modify_email():
+    """
+    修改邮箱
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     if data['yzm'].lower() == session['yzm'].lower():
@@ -91,6 +116,10 @@ def modify_email():
 @ajax.route("/modify_passwd",methods=['POST'])
 @login_required
 def modify_passwd():
+    """
+    修改密码
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     print(data)
@@ -106,6 +135,10 @@ def modify_passwd():
 @ajax.route("/get_posts",methods=['POST'])
 @login_required
 def get_posts():
+    """
+    获取用户写的文章
+    :return:
+    """
     data_json = json.loads(request.get_data(as_text=True))
     page = int(data_json['page'])
     pagination = Post.query.filter_by(author_id=current_user.id).order_by(Post.timestmp.desc()).paginate(page=page,per_page=10)
@@ -118,6 +151,7 @@ def get_posts():
 @ajax.route("/get_posts/species",methods=['POST'])
 @login_required
 def get_posts_species():
+    # 获取不同的标签的文章
     data_json = json.loads(request.get_data(as_text=True))
     page = int(data_json['page'])
     sp = Species.query.filter_by(name=data_json['sp_id']).first()
@@ -131,6 +165,10 @@ def get_posts_species():
 @ajax.route("/get_collect_posts",methods=['POST'])
 @login_required
 def get_collect_posts():
+    """
+    获取收藏的文章
+    :return:
+    """
     data_json = json.loads(request.get_data(as_text=True))
     page = int(data_json['page'])
     pagination = Collect.query.filter_by(collect_user_id=current_user.id).order_by(Collect.timestamp.desc()).paginate(page=page,per_page=10)
@@ -147,6 +185,10 @@ def get_collect_posts():
 @ajax.route("/get_works",methods=['POST'])
 @login_required
 def get_works():
+    """
+    获取用户的作业
+    :return:
+    """
     data_json = json.loads(request.get_data(as_text=True))
     page = int(data_json['page'])
     pagination = HomeWork_User.query.filter_by(owner_id=current_user.id).order_by(HomeWork_User.timestmp.desc()).paginate(
@@ -160,9 +202,14 @@ def get_works():
     return jsonify({'code':200,'msg':{'data':data}})
 
 
+
 @ajax.route("/get_works_species",methods=['POST'])
 @login_required
 def get_works_species():
+    """
+    获取当前用户的每个标签的作业
+    :return:
+    """
     data_json = json.loads(request.get_data(as_text=True))
     page = int(data_json['page'])
     pagination = HomeWork_User.query.filter_by(owner_id=current_user.id).order_by(HomeWork_User.timestmp.desc()).paginate(
@@ -182,6 +229,10 @@ def get_works_species():
 @ajax.route("/get_messages",methods=['GET'])
 @login_required
 def get_messages():
+    """
+    获取用户的消息
+    :return:
+    """
     msgs = Message.query.filter_by(accept_id=current_user.id).all()
     users = []
     for msg in msgs:
@@ -194,6 +245,10 @@ def get_messages():
 @ajax.route("/is_read",methods=['POST'])
 @login_required
 def is_read():
+    """
+    判断是否已读某一条消息消息
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     msg = Message.query.filter_by(id=data['id']).first()
@@ -207,6 +262,10 @@ def is_read():
 @ajax.route("/del_msg",methods=['POST'])
 @login_required
 def del_msg():
+    """
+    删除消息
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     msg = Message.query.filter_by(id=data['id']).first()
@@ -218,6 +277,10 @@ def del_msg():
 @ajax.route('/collect_post',methods=['POST'])
 @login_required
 def collect_post():
+    """
+    收藏文章
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     print(data)
@@ -230,6 +293,10 @@ def collect_post():
 @ajax.route('/un_collect_post',methods=['POST'])
 @login_required
 def un_collect_post():
+    """
+    取消收藏文章
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     print(data)
@@ -243,6 +310,10 @@ def un_collect_post():
 @ajax.route("/download_file",methods=['POST'])
 @login_required
 def down_file():
+    """
+    下载文件
+    :return:
+    """
     data = request.get_data(as_text=True)
     data = json.loads(data)
     path = ''
@@ -261,6 +332,10 @@ def down_file():
 @ajax.route('/submit_homework',methods=['POST'])
 @login_required
 def submit_homework():
+    """
+    提交作业
+    :return:
+    """
     data = json.loads(request.get_data(as_text=True))
     if data['flag'] == 'blog':
         url = data['url']
@@ -283,6 +358,10 @@ def submit_homework():
 @ajax.route('/submit_homework_file',methods=['POST'])
 @login_required
 def submit_homework_file():
+    """
+    提交作业文档
+    :return:
+    """
     file = request.files['file']
     print(file.filename)
     import os.path as op
@@ -303,6 +382,10 @@ def submit_homework_file():
 @ajax.route('/search',methods=['POST'])
 @login_required
 def search():
+    """
+    搜索博客或者作业
+    :return:
+    """
     data = json.loads(request.get_data(as_text=True))
     data_ = data
     print(data)
@@ -337,6 +420,16 @@ def search():
 @ajax.route('/search_self',methods=['POST'])
 @login_required
 def search_self():
+    """
+    data={
+        type:'work'/'post'，搜索的类型,文章还是,
+        page:页面数,
+        content:搜索内容
+
+    }
+    个人中心的搜索
+    :return:
+    """
     data = json.loads(request.get_data(as_text=True))
     data_ = data
     print(data)
