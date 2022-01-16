@@ -11,6 +11,7 @@ Faker==10.0.0
 Flask==1.1.2
 Flask-Admin==1.5.8
 Flask-BabelEx==0.9.4
+Flask-Cache==0.13.1
 Flask-Login==0.5.0
 Flask-Mail==0.9.1
 Flask-Markdown==0.3
@@ -20,7 +21,9 @@ Flask-Script==2.0.6
 Flask-SocketIO==5.1.1
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.0
+gevent==21.12.0
 greenlet==1.1.2
+gunicorn==20.1.0
 importlib-metadata==4.8.2
 importlib-resources==5.4.0
 itsdangerous==2.0.1
@@ -43,3 +46,5 @@ Werkzeug==2.0.2
 wrapt==1.13.3
 WTForms==3.0.0
 zipp==3.6.0
+zope.event==4.5.0
+zope.interface==5.4.0
