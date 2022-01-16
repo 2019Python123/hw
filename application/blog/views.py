@@ -133,7 +133,8 @@ def show_work(works_id):
     :return:
     """
     homework = Homework.query.filter_by(id=works_id).first()
-    return render_template("blog/singal_work.html",post=homework)
+    hu = HomeWork_User.query.filter_by(owner_name=current_user.name,homework_id=homework.id).first()
+    return render_template("blog/singal_work.html",post=homework,is_owner=True if hu is not None else False)
 
 
 @blog.route("/show/admin_work/<int:works_id>")
@@ -145,4 +146,5 @@ def show_work_admin(works_id):
     :return:
     """
     homework = Homework.query.filter_by(id=works_id).first()
+
     return render_template("blog/singal_work_admin.html",post=homework)
