@@ -11,9 +11,6 @@ def login():
         form = request.form.to_dict()
         user = User.query.filter_by(name=form.get("name")).first()
         if user:
-            print(form.get('yzm').lower() == session['yzm'].lower())
-            print(form.get('yzm'))
-            print(session['yzm'])
             if user.verify_password_hash(form.get('passwd')) and form.get('yzm').lower() == session['yzm'].lower():
                 login_user(user,form.get('remember'))
                 flash(form.get('name')+'同学登录成功')
@@ -28,6 +25,7 @@ def login():
         return redirect(url_for('blog.show_posts',page=1))
     img_src,yzm = get_file("application/static/captcha")
     session['yzm'] = yzm
+
     return render_template("auth/login.html",img_src=img_src)
 
 

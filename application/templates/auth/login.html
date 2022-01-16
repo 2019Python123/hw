@@ -6,7 +6,7 @@
 
 {% block body %}
 {% include "tips_modal.html" %}
-{% include "imgs.html" %}
+
 
     <div class="col-sm-3 main" style="position: absolute;top: 55%;left: 36%;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)">
         <form class="form-horizontal"  action="{{ url_for('auth.login') }}" method="POST">
@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="inputPassword4" class="col-sm-2 control-label"><span class="glyphicon glyphicon-check" style="color: rgb(28, 211, 50);"> </span>验证码</label>
                 <div class="col-sm-5">
-                    <input type="password" name="yzm" class="form-control" id="inputPassword4" placeholder="验证码" onblur="add_progressbar()">
+                    <input type="text" name="yzm" class="form-control" id="inputPassword4" placeholder="验证码" onblur="add_progressbar()">
                 </div>
                 <div class="col-sm-5" id="captcha" onclick="get_captcha()">
                     <img src="{{ url_for('static',filename=img_src) }}" alt="验证码">
